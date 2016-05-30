@@ -12,6 +12,44 @@
 
 > 译者注：上面提供的方法已经失效，自symfony2.3之后下载通过Symfony Installer进行安装。具体方法可参考官网。或由Composer进行安装（~~其中1.0.0-alpha10有较大bug，会导致无法安装包，请谨慎下载~~ 截至至现在该问题已经恢复正常），由于国内网络众所周知的原因，基本上两者直接下载可能性都较小，前者可选定网络流量较少的时段下载。
 
+## Composer安装方式
+本部分为补充部分，参考[更新Vendors](http://intelligentbee.com/blog/2013/08/07/symfony2-jobeet-day-1-starting-up-the-project/)部分内容，简单介绍一下Composer的安装及使用。
+
+Composer是一个流行的PHP的包依赖管理工具。它允许你申明项目所依赖的代码库，它会在你的项目中为你安装他们。他的安装方式非常简单。
+
+*nux下
+> **curl -sS https://getcomposer.org/installer | php**
+
+windows下
+> **C:\Users\username>cd C:\bin
+C:\bin>php -r "readfile('https://getcomposer.org/installer');" | php**
+
+注：上述方式都是将其作为局部安装使用。
+
+然后就可以用
+> **php composer.phar install**
+
+方式安装所需要的依赖包了。
+其他关于更详细的信息可以前往[官网](http://docs.phpcomposer.com/)进行查看
+
+## 用composer安装Symfony
+
+> **php composer.phar create-project symfony/framework-standard-edition test/ 2.7.0**
+
+其中会回答几个问题如下：
+> database_host (127.0.0.1):
+database_port (null): 3306
+database_name (symfony): 
+database_user (root): 
+database_password (null):
+mailer_transport (smtp):
+mailer_host (127.0.0.1):
+mailer_user (null):
+mailer_password (null):
+secret (ThisTokenIsNotSoSecretChangeIt):*098f6bcd4621d373cade4e832627b4f6*
+
+需要注意的是最后一个输入一个随机字符串
+
 
 ## 配置web 服务器
 
@@ -81,6 +119,7 @@ php app/console cache:clear --env=dev**
 
 我们能在项目目录下看到`src/Ens/JobeetBundle`这个新的Bundle。
 这个Bundle生成器帮助我们生成了一个DefaultController控制器和一个index action。现在你能通过浏览器访问 *http://jobeet.local/hello/jobeet* 或 *http://jobeet.local/app_dev.php/hello/jobeet* 这两个网址来查看效果。
+
 
 ## 环境
 与Symfony 1.x相比，Symfony2也有它自己不同的环境。如果你打开这个项目的web目录，将看到`app.php` 和`app_dev.php`这两个php文件。他们称之为前端控制器。应用程序的所有请求都将通过他们。`app.php`文件是用于生产环境，而`app_dev.php`则被用来在web开发人员进行工作时使用。开发环境被证明是非常方便的，这是因为它会告诉你所有的错误和警告与`Web调试工具栏`---开发人员最好的朋友。
