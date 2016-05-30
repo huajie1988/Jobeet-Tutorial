@@ -37,16 +37,16 @@ C:\bin>php -r "readfile('https://getcomposer.org/installer');" | php**
 > **php composer.phar create-project symfony/framework-standard-edition test/ 2.7.0**
 
 其中会回答几个问题如下：
-> database_host (127.0.0.1):
-database_port (null): 3306
-database_name (symfony): 
-database_user (root): 
-database_password (null):
-mailer_transport (smtp):
-mailer_host (127.0.0.1):
-mailer_user (null):
-mailer_password (null):
-secret (ThisTokenIsNotSoSecretChangeIt):*098f6bcd4621d373cade4e832627b4f6*
+> database_host (127.0.0.1):  
+database_port (null): 3306  
+database_name (symfony):  
+database_user (root):  
+database_password (null):  
+mailer_transport (smtp):  
+mailer_host (127.0.0.1):  
+mailer_user (null):  
+mailer_password (null):  
+secret (ThisTokenIsNotSoSecretChangeIt):*098f6bcd4621d373cade4e832627b4f6*  
 
 需要注意的是最后一个输入一个随机字符串
 
@@ -100,20 +100,20 @@ secret (ThisTokenIsNotSoSecretChangeIt):*098f6bcd4621d373cade4e832627b4f6*
 
 生成器会在过程中问你几个问题，这里有问题及相应的答案供你参考（除了一个使用了非默认回答）
 
-> Bundle namespace [Ens/JobeetBundle]: Ens/JobeetBundle
-Bundle name [EnsJobeetBundle]: EnsJobeetBundle
-Target directory [/home/dragos/work/jobeet/src]:
-/home/dragos/work/jobeet/src
-Configuration format (yml, xml, php, or annotation) [yml]: yml
-Do you want to generate the whole directory structure [no]? yes
-Do you confirm generation [yes]? Yes
-Confirm automatic update of your Kernel [yes]? Yes
-Confirm automatic update of the Routing [yes]? Yes
+> Bundle namespace [Ens/JobeetBundle]: Ens/JobeetBundle  
+Bundle name [EnsJobeetBundle]: EnsJobeetBundle  
+Target directory [/home/dragos/work/jobeet/src]:  
+/home/dragos/work/jobeet/src  
+Configuration format (yml, xml, php, or annotation) [yml]: yml  
+Do you want to generate the whole directory structure [no]? yes  
+Do you confirm generation [yes]? Yes  
+Confirm automatic update of your Kernel [yes]? Yes  
+Confirm automatic update of the Routing [yes]? Yes  
 
 接下来清理缓存
 
 
-> **php app/console cache:clear --env=prod
+> **php app/console cache:clear --env=prod  
 php app/console cache:clear --env=dev**
 
 
