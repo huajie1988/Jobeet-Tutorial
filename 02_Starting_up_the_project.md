@@ -120,6 +120,7 @@ php app/console cache:clear --env=dev**
 我们能在项目目录下看到`src/Ens/JobeetBundle`这个新的Bundle。
 这个Bundle生成器帮助我们生成了一个DefaultController控制器和一个index action。现在你能通过浏览器访问 *http://jobeet.local/hello/jobeet* 或 *http://jobeet.local/app_dev.php/hello/jobeet* 这两个网址来查看效果。
 
+>译者注：**在symfony 3.0之后将console文件移动到bin目录下，操作不变**
 
 ## 环境
 与Symfony 1.x相比，Symfony2也有它自己不同的环境。如果你打开这个项目的web目录，将看到`app.php` 和`app_dev.php`这两个php文件。他们称之为前端控制器。应用程序的所有请求都将通过他们。`app.php`文件是用于生产环境，而`app_dev.php`则被用来在web开发人员进行工作时使用。开发环境被证明是非常方便的，这是因为它会告诉你所有的错误和警告与`Web调试工具栏`---开发人员最好的朋友。
