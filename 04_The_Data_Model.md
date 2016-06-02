@@ -12,15 +12,17 @@
 接下来我们将通过[Doctrine ORM](http://www.doctrine-project.org/projects/orm.html)来创建jobs, affiliates 和 categories 三张表。
 首先通过修改`app/config/parameters.ini`文件来修改数据库的连接参数，如下（假定本教程使用MySQL）：
 
-> ;app/config/parameters.ini  
-[parameters]  
-    database_driver   = pdo_mysql  
-    database_host     = localhost  
-    database_name     = jobeet  
-    database_user     = root  
-    database_password = password  
+```yaml
+#app/config/parameters.ini
+[parameters]
+    database_driver   = pdo_mysql
+    database_host     = localhost
+    database_name     = jobeet
+    database_user     = root
+    database_password = password
+```
 
-> **译者注：2.1以后改为app/config/parameters.yml文件**
+> *译者注：2.1以后改为app/config/parameters.yml文件*
 
 现在Doctrine 已经连接了数据库并且使用如下命令创建数据库（如果你还没有创建的话）：
 
@@ -50,7 +52,7 @@ Ens\JobeetBundle\Entity\Category:
     category_affiliates:
       targetEntity: CategoryAffiliate
       mappedBy: category
-``` 
+```
 
 
 
@@ -119,9 +121,7 @@ Ens\JobeetBundle\Entity\Job:
   lifecycleCallbacks:
     prePersist: [ setCreatedAtValue ]
     preUpdate: [ setUpdatedAtValue ]
-``` 
-
-
+```
 
 ```yaml
 #src/Ens/JobeetBundle/Resources/config/doctrine/Affiliate.orm.yml
@@ -151,9 +151,7 @@ Ens\JobeetBundle\Entity\Affiliate:
       mappedBy: affiliate
   lifecycleCallbacks:
     prePersist: [ setCreatedAtValue ]
-``` 
-
-
+```
 
 ```yaml
 #src/Ens/JobeetBundle/Resources/config/doctrine/CategoryAffiliate.orm.yml
@@ -178,7 +176,6 @@ Ens\JobeetBundle\Entity\CategoryAffiliate:
         name: affiliate_id
         referencedColumnName: id
 ```
-
 
 
 ## ORM:
