@@ -52,6 +52,8 @@ Ens\JobeetBundle\Entity\Category:
       mappedBy: category
 ``` 
 
+
+
 ```yaml
 #src/Ens/JobeetBundle/Resources/config/doctrine/Job.orm.yml
 Ens\JobeetBundle\Entity\Job:
@@ -119,6 +121,8 @@ Ens\JobeetBundle\Entity\Job:
     preUpdate: [ setUpdatedAtValue ]
 ``` 
 
+
+
 ```yaml
 #src/Ens/JobeetBundle/Resources/config/doctrine/Affiliate.orm.yml
 Ens\JobeetBundle\Entity\Affiliate:
@@ -149,6 +153,8 @@ Ens\JobeetBundle\Entity\Affiliate:
     prePersist: [ setCreatedAtValue ]
 ``` 
 
+
+
 ```yaml
 #src/Ens/JobeetBundle/Resources/config/doctrine/CategoryAffiliate.orm.yml
 Ens\JobeetBundle\Entity\CategoryAffiliate:
@@ -174,12 +180,13 @@ Ens\JobeetBundle\Entity\CategoryAffiliate:
 ```
 
 
+
 ## ORM:
 现在我们可以通过如下命令在Doctrine 中创建我们的对象：
 
 > **php app/console doctrine:generate:entities EnsJobeetBundle**
 
-> \>Generating entities for bundle "EnsJobeetBundle"
+> \> Generating entities for bundle "EnsJobeetBundle"
   \> backing up Job.php to Job.php~
   \> generating Ens\JobeetBundle\Entity\Job
   \> backing up Category.php to Category.php~
