@@ -19,7 +19,7 @@ Jobeet项目是由symfony团队用symfony 1.x书写的一个相当好的教程�
 * [Symfony2 Jobeet Day 11: 测试你的表单](12_Testing_your_Forms.md)
 * [Symfony2 Jobeet Day 12: Admin Bundle](13_The_Admin_Bundle.md)
 * [Symfony2 Jobeet Day 13: 安全](14_Security.md)
-* [Symfony2 Jobeet Day 14: Feeds](15_Feeds.md)
+* [Symfony2 Jobeet Day 14: 订阅](15_Feeds.md)
 * [Symfony2 Jobeet Day 15: Web Services](16_Web_Services.md)
 * [Symfony2 Jobeet Day 16: 邮件](17_The_Mailer.md)
 * [Symfony2 Jobeet Day 17: 搜索](18_Search.md)

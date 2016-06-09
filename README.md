@@ -4,7 +4,7 @@
 
 目前状态：WIP
 
-进度：汉化 40% 润色 0% 备注补充 20%
+进度：汉化 55% 润色 0% 备注补充 20%
 
 源文本取自：
 
@@ -30,7 +30,7 @@
 12.[Symfony2 Jobeet Day 11: 测试你的表单](12_Testing_your_Forms.md)  
 13.[Symfony2 Jobeet Day 12: Admin Bundle](13_The_Admin_Bundle.md)  
 14.[Symfony2 Jobeet Day 13: 安全](14_Security.md)  
-15.[Symfony2 Jobeet Day 14: Feeds](15_Feeds.md)  
+15.[Symfony2 Jobeet Day 14: 订阅](15_Feeds.md)  
 16.[Symfony2 Jobeet Day 15: Web Services](16_Web_Services.md)  
 17.[Symfony2 Jobeet Day 16: 邮件](17_The_Mailer.md)  
 18.[Symfony2 Jobeet Day 17: 搜索](18_Search.md)  

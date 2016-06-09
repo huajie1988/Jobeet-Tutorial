@@ -29,7 +29,7 @@ public function createAction()
   $form->bindRequest($request);
  
   if ($form->isValid()) {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
  
     $em->persist($entity);
     $em->flush();
@@ -232,7 +232,7 @@ public function createAction()
   // ...
  
   if ($form->isValid()) {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
  
     $entity->file->move(__DIR__.'/../../../../web/uploads/jobs', $entity->file->getClientOriginalName());
     $entity->setLogo($entity->file->getClientOriginalName());
@@ -251,7 +251,7 @@ public function createAction()
 }
 ```
 
-> 你需要创建一个logo目录(在*web/uploads/jobs/*)并确认在服务器上有写的权限。
+> *你需要创建一个logo目录(在*web/uploads/jobs/*)并确认在服务器上有写的权限。*
 
 尽管这个已经能实现要求了，但更好的做法是使用 Doctrine Job entity 来处理文件上传。
 
@@ -361,7 +361,7 @@ public function createAction()
   $form->bindRequest($request);
  
   if ($form->isValid()) {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
  
     $em->persist($entity);
     $em->flush();
@@ -810,7 +810,7 @@ ens_job_delete:
  
 public function editAction($token)
 {
-  $em = $this->getDoctrine()->getEntityManager();
+  $em = $this->getDoctrine()->getManager();
  
   $entity = $em->getRepository('EnsJobeetBundle:Job')->findOneByToken($token);
  
@@ -830,7 +830,7 @@ public function editAction($token)
  
 public function updateAction($token)
 {
-  $em = $this->getDoctrine()->getEntityManager();
+  $em = $this->getDoctrine()->getManager();
  
   $entity = $em->getRepository('EnsJobeetBundle:Job')->findOneByToken($token);
  
@@ -867,7 +867,7 @@ public function deleteAction($token)
   $form->bindRequest($request);
  
   if ($form->isValid()) {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
     $entity = $em->getRepository('EnsJobeetBundle:Job')->findOneByToken($token);
  
     if (!$entity) {
@@ -937,7 +937,7 @@ ens_job_preview:
  
 public function previewAction($token)
 {
-  $em = $this->getDoctrine()->getEntityManager();
+  $em = $this->getDoctrine()->getManager();
  
   $entity = $em->getRepository('EnsJobeetBundle:Job')->findOneByToken($token);
  
@@ -1145,7 +1145,7 @@ public function publishAction($token)
   $form->bindRequest($request);
  
   if ($form->isValid()) {
-    $em = $this->getDoctrine()->getEntityManager();
+    $em = $this->getDoctrine()->getManager();
     $entity = $em->getRepository('EnsJobeetBundle:Job')->findOneByToken($token);
  
     if (!$entity) {
@@ -1289,7 +1289,7 @@ class CategoryRepository extends EntityRepository
 {
   public function getWithJobs()
   {
-    $query = $this->getEntityManager()->createQuery(
+    $query = $this->getManager()->createQuery(
       'SELECT c FROM EnsJobeetBundle:Category c LEFT JOIN c.jobs j WHERE j.expires_at > :date AND j.is_activated = :activated'
     )->setParameter('date', date('Y-m-d H:i:s', time()))->setParameter('activated', 1);
  

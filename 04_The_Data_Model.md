@@ -361,32 +361,65 @@ class Job
 
 我们将使用[DoctrineFixturesBundle](http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html)为数据库填充初始数据。要使用这个包，我们必须按照下面的步骤：
 
-1、	将如下代码添加到你的deps 文件
-> [doctrine-fixtures]  
-> git=http://github.com/doctrine/data-fixtures.git  
+~~1、	将如下代码添加到你的deps 文件~~
+> ~~[doctrine-fixtures]~~  
+> ~~&ensp;&ensp;git=http://github.com/doctrine/data-fixtures.git~~  
  
-> [DoctrineFixturesBundle]  
-> git=http://github.com/doctrine/DoctrineFixturesBundle.git  
-> target=/bundles/Symfony/Bundle/DoctrineFixturesBundle  
-> version=origin/2.0  
+> ~~[DoctrineFixturesBundle]~~  
+> ~~&ensp;&ensp;git=http://github.com/doctrine/DoctrineFixturesBundle.git~~  
+> ~~&ensp;&ensp;target=/bundles/Symfony/Bundle/DoctrineFixturesBundle~~  
+> ~~&ensp;&ensp;version=origin/2.0~~  
 
-2、	升级vendor文件夹
+~~2、	升级vendor文件夹~~
 
-> **php bin/vendors install –reinstall**
+> **~~php bin/vendors install –reinstall~~**
 
-3、	将*Doctrine\Common\DataFixtures*命名空间注册到*app/autoload.php*里
+~~3、	将*Doctrine\Common\DataFixtures*命名空间注册到*app/autoload.php*里~~
 
-```php
+
+> ~~// ...~~  
+> ~~$loader->registerNamespaces(array(~~  
+> &ensp;&ensp;~~// ...~~  
+> &ensp;&ensp;~~'Doctrine\\Common\\DataFixtures' => \__DIR__.'/../vendor/doctrine-fixtures/lib',~~  
+> &ensp;&ensp;~~'Doctrine\\Common' => \__DIR__.'/../vendor/doctrine-common/lib',~~  
+> &ensp;&ensp;~~// ...~~  
+> ~~));~~  
+
+
+~~4、	将DoctrineFixturesBundle注册到app/AppKernel.php中~~
+
+
+> ~~// ...~~  
+> ~~public function registerBundles()~~  
+> ~~{~~  
+> &ensp;&ensp;~~$bundles = array(~~  
+> &ensp;&ensp;~~// ...~~  
+> &ensp;&ensp;&ensp;&ensp;~~new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),~~  
+> &ensp;&ensp;~~// ...~~  
+> &ensp;&ensp;~~);~~  
+> ~~// ...~~  
+> ~~}~~  
+
+
+使用Composer安装的方式：
+
+1、在composer.json的require节添加如下：
+
+```json
 // ...
-$loader->registerNamespaces(array(
-    // ...
-   'Doctrine\\Common\\DataFixtures' => __DIR__.'/../vendor/doctrine-fixtures/lib',
-   'Doctrine\\Common' => __DIR__.'/../vendor/doctrine-common/lib',
-    // ...
-));
+    "require": {
+        // ...
+        "doctrine/doctrine-fixtures-bundle": "dev-master",
+        "doctrine/data-fixtures": "dev-master"
+    },
+ 
+// ...
 ```
+2、运行update命令：
 
-4、	将DoctrineFixturesBundle注册到app/AppKernel.php中
+> **php composer.phar update**
+
+3、将DoctrineFixturesBundle注册到app/AppKernel.php中：
 
 ```php
 // ...
@@ -395,14 +428,14 @@ public function registerBundles()
     $bundles = array(
     // ...
         new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
-  	// ...
- 		);
- 	// ...
+    // ...
+    );
+  // ...
 }
 ```
 
 
-> *译者注：现在前三步可以直接用Composer安装完成。不得不说这真是一个跨时代的发明(XD)*
+> *译者注：现在前三步可以直接用Composer安装完成。不得不说这真是一个跨时代的发明(XD)。且以后的安装方式也与上述表示相同，即原文保留，但以新的方式替代。*
 
 现在我们已经安装好一切了，可以开始着手填充数据了。
 

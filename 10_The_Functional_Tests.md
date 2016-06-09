@@ -327,17 +327,17 @@ class CategoryControllerTest extends WebTestCase
 
 
 ```php
-// src/Ens/JobeetBundle/Test/Controller/JobControllerTest.php
+// src/Ens/JobeetBundle/Tests/Controller/JobControllerTest.php
 
-namespace IbwJobeetBundleTestsController;
+namespace Ens\JobeetBundle\Tests\Controller;
  
-use SymfonyBundleFrameworkBundleTestWebTestCase;
-use SymfonyBundleFrameworkBundleConsoleApplication;
-use SymfonyComponentConsoleOutputNullOutput;
-use SymfonyComponentConsoleInputArrayInput;
-use DoctrineBundleDoctrineBundleCommandDropDatabaseDoctrineCommand;
-use DoctrineBundleDoctrineBundleCommandCreateDatabaseDoctrineCommand;
-use DoctrineBundleDoctrineBundleCommandProxyCreateSchemaDoctrineCommand;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Input\ArrayInput;
+use Doctrine\Bundle\DoctrineBundle\Command\DropDatabaseDoctrineCommand;
+use Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand;
+use Doctrine\Bundle\DoctrineBundle\Command\Proxy\CreateSchemaDoctrineCommand;
  
 class JobControllerTest extends WebTestCase
 {
@@ -389,10 +389,10 @@ class JobControllerTest extends WebTestCase
  
         // load fixtures
         $client = static::createClient();
-        $loader = new SymfonyBridgeDoctrineDataFixturesContainerAwareLoader($client->getContainer());
-        $loader->loadFromDirectory(static::$kernel->locateResource('@IbwJobeetBundle/DataFixtures/ORM'));
-        $purger = new DoctrineCommonDataFixturesPurgerORMPurger($this->em);
-        $executor = new DoctrineCommonDataFixturesExecutorORMExecutor($this->em, $purger);
+        $loader = new \Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader($client->getContainer());
+        $loader->loadFromDirectory(static::$kernel->locateResource('@EnsJobeetBundle/DataFixtures/ORM'));
+        $purger = new \Doctrine\Common\DataFixtures\Purger\ORMPurger($this->em);
+        $executor = new \Doctrine\Common\DataFixtures\Executor\ORMExecutor($this->em, $purger);
         $executor->execute($loader->getFixtures());
     }
  
@@ -402,7 +402,7 @@ class JobControllerTest extends WebTestCase
         $kernel->boot();
         $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
  
-        $query = $em->createQuery('SELECT j from IbwJobeetBundle:Job j LEFT JOIN j.category c WHERE c.slug = :slug AND j.expires_at > :date ORDER BY j.created_at DESC');
+        $query = $em->createQuery('SELECT j from EnsJobeetBundle:Job j LEFT JOIN j.category c WHERE c.slug = :slug AND j.expires_at > :date ORDER BY j.created_at DESC');
         $query->setParameter('slug', 'programming');
         $query->setParameter('date', date('Y-m-d H:i:s', time()));
         $query->setMaxResults(1);
@@ -416,7 +416,7 @@ class JobControllerTest extends WebTestCase
         $kernel->boot();
         $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
  
-        $query = $em->createQuery('SELECT j from IbwJobeetBundle:Job j WHERE j.expires_at < :date');             
+        $query = $em->createQuery('SELECT j from EnsJobeetBundle:Job j WHERE j.expires_at < :date');             
         $query->setParameter('date', date('Y-m-d H:i:s', time()));
         $query->setMaxResults(1);
  
@@ -433,7 +433,7 @@ class JobControllerTest extends WebTestCase
         $client = static::createClient();
  
         $crawler = $client->request('GET', '/');
-        $this->assertEquals('IbwJobeetBundleControllerJobController::indexAction', $client->getRequest()->attributes->get('_controller'));
+        $this->assertEquals('Ens\JobeetBundle\Controller\JobController::indexAction', $client->getRequest()->attributes->get('_controller'));
  
         // expired jobs are not listed
         $this->assertTrue($crawler->filter('.jobs td.position:contains("Expired")')->count() == 0);
@@ -450,7 +450,7 @@ class JobControllerTest extends WebTestCase
         $job = $this->getMostRecentProgrammingJob();
         $link = $crawler->selectLink('Web Developer')->first()->link();
         $crawler = $client->click($link);
-        $this->assertEquals('IbwJobeetBundleControllerJobController::showAction', $client->getRequest()->attributes->get('_controller'));
+        $this->assertEquals('Ens\JobeetBundle\Controller\JobController::showAction', $client->getRequest()->attributes->get('_controller'));
         $this->assertEquals($job->getCompanySlug(), $client->getRequest()->attributes->get('company'));
         $this->assertEquals($job->getLocationSlug(), $client->getRequest()->attributes->get('location'));
         $this->assertEquals($job->getPositionSlug(), $client->getRequest()->attributes->get('position'));
@@ -466,6 +466,7 @@ class JobControllerTest extends WebTestCase
     }
 }
 
+
 ```
 
 
@@ -473,15 +474,15 @@ class JobControllerTest extends WebTestCase
 ```php
 // src/Ens/JobeetBundle/Test/Controller/CategoryControllerTest.php
 
-namespace IbwJobeetBundleTestsController;
+namespace EnsJobeetBundleTestsController;
  
-use SymfonyBundleFrameworkBundleTestWebTestCase;
-use SymfonyBundleFrameworkBundleConsoleApplication;
-use SymfonyComponentConsoleOutputNullOutput;
-use SymfonyComponentConsoleInputArrayInput;
-use DoctrineBundleDoctrineBundleCommandDropDatabaseDoctrineCommand;
-use DoctrineBundleDoctrineBundleCommandCreateDatabaseDoctrineCommand;
-use DoctrineBundleDoctrineBundleCommandProxyCreateSchemaDoctrineCommand;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Input\ArrayInput;
+use Doctrine\Bundle\DoctrineBundle\Command\DropDatabaseDoctrineCommand;
+use Doctrine\Bundle\DoctrineBundle\Command\CreateDatabaseDoctrineCommand;
+use Doctrine\Bundle\DoctrineBundle\Command\Proxy\CreateSchemaDoctrineCommand;
  
 class CategoryControllerTest extends WebTestCase
 {
@@ -532,10 +533,10 @@ class CategoryControllerTest extends WebTestCase
  
         // load fixtures
         $client = static::createClient();
-        $loader = new SymfonyBridgeDoctrineDataFixturesContainerAwareLoader($client->getContainer());
-        $loader->loadFromDirectory(static::$kernel->locateResource('@IbwJobeetBundle/DataFixtures/ORM'));
-        $purger = new DoctrineCommonDataFixturesPurgerORMPurger($this->em);
-        $executor = new DoctrineCommonDataFixturesExecutorORMExecutor($this->em, $purger);
+        $loader = new \Symfony\Bridge\Doctrine\DataFixtures\ContainerAwareLoader($client->getContainer());
+        $loader->loadFromDirectory(static::$kernel->locateResource('@EnsJobeetBundle/DataFixtures/ORM'));
+        $purger = new \Doctrine\Common\DataFixtures\Purger\ORMPurger($this->em);
+        $executor = new \Doctrine\Common\DataFixtures\Executor\ORMExecutor($this->em, $purger);
         $executor->execute($loader->getFixtures());
     }
  
@@ -550,7 +551,7 @@ class CategoryControllerTest extends WebTestCase
  
         $client = static::createClient();
  
-        $categories = $this->em->getRepository('IbwJobeetBundle:Category')->getWithJobs();
+        $categories = $this->em->getRepository('EnsJobeetBundle:Category')->getWithJobs();
  
         // categories on homepage are clickable
         foreach($categories as $category) {
@@ -559,10 +560,10 @@ class CategoryControllerTest extends WebTestCase
             $link = $crawler->selectLink($category->getName())->link();
             $crawler = $client->click($link);
  
-            $this->assertEquals('IbwJobeetBundleControllerCategoryController::showAction', $client->getRequest()->attributes->get('_controller'));
+            $this->assertEquals('Ens\JobeetBundle\Controller\CategoryController::showAction', $client->getRequest()->attributes->get('_controller'));
             $this->assertEquals($category->getSlug(), $client->getRequest()->attributes->get('slug'));
  
-            $jobs_no = $this->em->getRepository('IbwJobeetBundle:Job')->countActiveJobs($category->getId()); 
+            $jobs_no = $this->em->getRepository('EnsJobeetBundle:Job')->countActiveJobs($category->getId()); 
  
             // categories with more than $max_jobs_on_homepage jobs also have a "more" link                 
             if($jobs_no > $max_jobs_on_homepage) {
@@ -570,7 +571,7 @@ class CategoryControllerTest extends WebTestCase
                 $link = $crawler->filter(".category_" . $category->getSlug() . " .more_jobs a")->link();
                 $crawler = $client->click($link);
  
-                $this->assertEquals('IbwJobeetBundleControllerCategoryController::showAction', $client->getRequest()->attributes->get('_controller'));
+                $this->assertEquals('Ens\JobeetBundle\Controller\CategoryController::showAction', $client->getRequest()->attributes->get('_controller'));
                 $this->assertEquals($category->getSlug(), $client->getRequest()->attributes->get('slug'));
             }
  
@@ -581,22 +582,23 @@ class CategoryControllerTest extends WebTestCase
             $this->assertRegExp("/" . $jobs_no . " jobs/", $crawler->filter('.pagination_desc')->text());
  
             if($pages > 1) {
-                $this->assertRegExp("/page 1/" . $pages . "/", $crawler->filter('.pagination_desc')->text());
+                $this->assertRegExp("/page 1\/" . $pages . "/", $crawler->filter('.pagination_desc')->text());
  
                 for ($i = 2; $i <= $pages; $i++) {
                     $link = $crawler->selectLink($i)->link();
                     $crawler = $client->click($link);
  
-                    $this->assertEquals('IbwJobeetBundleControllerCategoryController::showAction', $client->getRequest()->attributes->get('_controller'));
+                    $this->assertEquals('Ens\JobeetBundle\Controller\CategoryController::showAction', $client->getRequest()->attributes->get('_controller'));
                     $this->assertEquals($i, $client->getRequest()->attributes->get('page'));
                     $this->assertTrue($crawler->filter('.jobs tr')->count() <= $max_jobs_on_category);
                     if($jobs_no >1) {
                         $this->assertRegExp("/" . $jobs_no . " jobs/", $crawler->filter('.pagination_desc')->text());
                     }
-                    $this->assertRegExp("/page " . $i . "/" . $pages . "/", $crawler->filter('.pagination_desc')->text());
+                    $this->assertRegExp("/page " . $i . "\/" . $pages . "/", $crawler->filter('.pagination_desc')->text());
                 }
             }     
         }
     }
 }
+
 ```
