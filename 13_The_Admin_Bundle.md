@@ -80,7 +80,7 @@
 > ~~}~~  
 
 输入如下命令进行安装：
-> **php composer.phar require sonata-project/admin-bundle** 
+> **php composer.phar require sonata-project/admin-bundle**  
 > \>Please provide a version constraint for the sonata-project/admin-bundle requirement: *
 
 其中我们为了使用最新版所以使用了*，你们也可以根据需要来调整。
@@ -234,18 +234,16 @@ class JobAdmin extends Admin
 现在我们需要为每个admin类在services.yml中进行配置：
 
 > ~~#src/Ens/JobeetBundle/Resources/config/services.yml~~  
-> ~~ ~~  
 > ~~services:~~  
 > &ensp;&ensp;~~ens.jobeet.admin.category:~~  
 > &ensp;&ensp;&ensp;&ensp;~~class: Ens\JobeetBundle\Admin\CategoryAdmin~~  
 > &ensp;&ensp;&ensp;&ensp;~~tags:~~  
-> &ensp;&ensp;&ensp;&ensp;~~    - { name: sonata.admin, manager_type: orm, group: jobeet, label: Categories }~~  
+> &ensp;&ensp;&ensp;&ensp;&ensp;~~- { name: sonata.admin, manager_type: orm, group: jobeet, label: Categories }~~  
 > &ensp;&ensp;&ensp;&ensp;~~arguments: [null, Ens\JobeetBundle\Entity\Category, EnsJobeetBundle:CategoryAdmin]~~  
-> ~~ ~~  
 > &ensp;&ensp;~~ens.jobeet.admin.job:~~  
 > &ensp;&ensp;&ensp;&ensp;~~class: Ens\JobeetBundle\Admin\JobAdmin~~  
 > &ensp;&ensp;&ensp;&ensp;~~tags:~~  
-> &ensp;&ensp;&ensp;&ensp;~~    - { name: sonata.admin, manager_type: orm, group: jobeet, label: Jobs }~~  
+> &ensp;&ensp;&ensp;&ensp;&ensp;~~- { name: sonata.admin, manager_type: orm, group: jobeet, label: Jobs }~~  
 > &ensp;&ensp;&ensp;&ensp;~~arguments: [null, Ens\JobeetBundle\Entity\Job, EnsJobeetBundle:JobAdmin]~~  
 
 ```yaml

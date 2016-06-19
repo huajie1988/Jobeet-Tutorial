@@ -474,7 +474,7 @@ class JobControllerTest extends WebTestCase
 ```php
 // src/Ens/JobeetBundle/Test/Controller/CategoryControllerTest.php
 
-namespace EnsJobeetBundleTestsController;
+namespace Ens\JobeetBundle\Tests\Controller;
  
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
