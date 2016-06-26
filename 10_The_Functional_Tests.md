@@ -323,8 +323,6 @@ class CategoryControllerTest extends WebTestCase
 
 本部分为补充部分，参考[实例学习](http://intelligentbee.com/blog/2013/08/15/symfony2-jobeet-day-9-the-functional-tests/)部分内容，提供了另一种更完善的测试方式，并且也更新一点，可以综合起来看。
 
-其中setUp的功能及使用可参考这篇《[Setup Testing and Fixtures in Symfony2: The Easy Way](http://intelligentbee.com/blog/2016/03/11/setup-testing-and-fixtures-in-symfony2-the-easy-way/)》
-
 
 ```php
 // src/Ens/JobeetBundle/Tests/Controller/JobControllerTest.php
