@@ -1,10 +1,10 @@
 # Jobeet-Tutorial
 
-基于Symfony2的Jobeet官方教程个人汉化
+基于Symfony2的Jobeet官方实战课程个人汉化
 
 目前状态：WIP
 
-进度：汉化 55% 润色 0% 备注补充 20%
+进度：汉化 90% 润色 0% 备注补充 20%
 
 源文本取自：
 
