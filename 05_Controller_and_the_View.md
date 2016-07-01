@@ -1,28 +1,33 @@
 # Symfony2 Jobeet Day 4: 控制器与视图
-今天，我们要继续完成昨天创建的基础job控制器。它已经拥有了Jobeet所需的大部分的代码：
 
-* 所有职位的列表
+今天，我们要继续完成昨天创建的job控制器。它已经拥有了Jobeet所需的大部分的代码：
+
+* 显示职位列表
 * 创建一个新的职位
-* 修改职位的页面
+* 修改一个职位
 * 删除一个职位
 
-虽然代码已经可以使用,但我们还需要在此基础上重构模板，使得它更匹配Jobeet模型。
+虽然我们的代码已经可以使用了,但还需要在此基础上重构一下模板，使得它更匹配Jobeet模型。
 
 ## MVC架构
 
-对于Web开发，组织你代码的方式有很多，但其中最为常见的解决方案就是[MVC设计模式](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)。简而言之, MVC设计模式是定义了一种最自然的组织代码的方式。
-这种模式将代码分为**三个层次**：
-**Model层**定义了业务逻辑（数据库属于这一层）。通过前一天的实战，你已经知道在Symfony2中存储所有和model相关的类和文件都在Entity/文件夹下。
-**View层**是用于与用户进行交互的图形界面（模板引擎是该层的一部分）。在Symfony2中,视图层主要使用Twig模板。它们存储在Resources/views/文件夹下，我们会在稍后看到。
-**Controller**是一段调用Model层代码，以此来获得一些数据,并传递给View层进而呈现给客户端。当我们在安装Symfony开始本教程时，我们可以看到所有的请求都是由前端控制器（app.php和app_dev.php）进行管理的。这些前端控制器将实际工作委派给具体的**action**。
+对于Web开发来说，组织你代码的方式有很多种，但其中最为常见的解决方案就是[MVC设计模式](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller)。  
+简而言之, MVC设计模式是定义了一种最自然的方式来组织代码。
+
+这种模式将代码分为三个层：
+**Model层**定义了业务逻辑（数据库属于这一层）。通过前一天的实战，你已经知道在Symfony2中存储所有和model相关的类和文件都在Entity/文件夹下。  
+**View层**是用于和用户进行交互的图形界面（模板引擎就是该层的一部分）。在Symfony2中,视图层主要是使用Twig模板。它们存储在Resources/views/文件夹下，我们会在稍后看到。  
+**Controller层**是一段调用Model层的代码，以此来获得一些数据,并传递给View层，进而呈现给客户端。
+
+当我们在安装Symfony开始本教程时，可以看到所有的请求都是由前端控制器（app.php和app_dev.php）进行管理的。这些前端控制器将实际工作委派给具体的action。
 
 ## 页面布局
 
-如果你有仔细观察设计,就会注意到的每个页面看起来都很相似。众所周知，重复的代码是一种不好的设计，无论是html还是php。所以我们需要找到一种方式来防止这些公用元素所造成的重复代码。
+如果你有仔细观察[我们的设计](03_The_Project.md),就会注意到的每个页面看起来都很相似。众所周知，重复的代码是一种不好的设计，无论是html还是php。所以我们需要找到一种方式来防止这些公用元素所造成的重复代码。
 
-解决这个问题的一个方法是定义一个页眉和页脚,并将它们包含在每个模板里面。另一个更好的方法是使用设计模式来解决这个问题:[装饰器模式](http://en.wikipedia.org/wiki/Decorator_pattern)。它可以将渲染好的模板置于一个全局模板中输出，该全局模板称之为**布局**
+解决这个问题的一个方法是定义一个页眉和页脚,并将它们包含在每个模板里面。另一个更好的方法是使用设计模式来解决这个问题:[装饰器模式](http://en.wikipedia.org/wiki/Decorator_pattern)。它可以将渲染好的模板置于一个全局模板中输出，该全局模板我们就称之为称之为**布局**
 
-与Symfony 1.x不同，Symfony2中并没有一个默认模板，因此我们将先创建一个，并用它来装饰我们的应用程序页面。
+与Symfony 1.x不同，Symfony 2中并没有一个默认的布局模板，因此我们首先将创建一个，并用它来装饰我们的应用程序页面。
 
 创建一个新的`layout.html.twig`文件在`src/Ens/JobeetBundle/Resources/views/`目录下
 
@@ -75,17 +80,17 @@
       </div>
  
       <div id="content">
-        {% if app.session.hasFlash('notice') %}
-          <div class="flash_notice">
-            {{ app.session.flash('notice') }}
-          </div>
-        {% endif %}
- 
-        {% if app.session.hasFlash('error') %}
-          <div class="flash_error">
-            {{ app.session.flash('error') }}
-          </div>
-        {% endif %}
+      {% for flashMessage in app.session.flashbag.get('notice') %}
+           <div class="flash_notice">
+               {{ flashMessage }}
+           </div>
+       {% endfor %}
+
+       {% for flashMessage in app.session.flashbag.get('error') %}
+           <div class="flash_error">
+               {{ flashMessage }}
+           </div>
+       {% endfor %}
  
         <div class="content">
             {% block content %}
@@ -114,10 +119,13 @@
 </html>
 ```
 
-## Twig Blocks
-Twig是Symfony2默认的模板引擎。你能定义blocks像我们上面所展示的那样，一个Twig block可以有一个默认的内容（例如上面的title block）也能使用子模板替换或扩展（稍后将会看到）。
+> *小提示，path函数中的名称为你在路由中定义的名称，请仔细查看src\Ens\JobeetBundle\Resources\config\routing\job.yml，以防找不到路由*
 
-现在，利用我们创建的新布局编辑所有的job模板（在`src/En/JobeetBundle/Resources/views/Job/`目录下的edit, index, new 和show模板），并重写content block
+## Twig Blocks
+
+Twig是Symfony2默认的模板引擎。你能像我们上面所展示的那样定义一块blocks，一个Twig block可以有一个默认的内容（例如上面的title block）也能使用子模板替换或扩展其中的内容（我们稍后将会看到）。
+
+现在，我们利用创建的新布局文件编辑所有的job模板（在`src/En/JobeetBundle/Resources/views/Job/`目录下的edit, index, new 和show模板），并重写content block
 
 ```html
 {% extends 'EnsJobeetBundle::layout.html.twig' %}
@@ -127,6 +135,9 @@ Twig是Symfony2默认的模板引擎。你能定义blocks像我们上面所展�
 {% endblock %}
 ```
 
+*小提示：此处自动生成的几个模板其实是在app\Resources\views\job目录下，你可以将其拷贝到src/En/JobeetBundle/Resources/views/Job/目录下再进行修改*
+
+
 ## 样式表、图片与javascript
 由于本教程不是关于网页设计的，所以在此我们已经准备好本项目所需的资源
 下载[图片文件](http://www.ens.ro/downloads/jobeet-images.zip)并解压到`src/Ens/JobeetBundle/Resources/public/images/`目录下
@@ -134,7 +145,7 @@ Twig是Symfony2默认的模板引擎。你能定义blocks像我们上面所展�
 
 然后运行：
 
-> **php app/console assets:install web**
+> **php app/console assets:install web --symlink**
 
 以此通知Symfony这些资源是公共的。
 
@@ -142,7 +153,7 @@ Twig是Symfony2默认的模板引擎。你能定义blocks像我们上面所展�
 
 我们有4个css文件admin.css, job.css, jobs.css 和main.css。其中main.css需要在所有的页面中都引用，其他css文件我们只需要在特定文件中引用即可。
 
-在模板中添加一个新的css文件需要重写stylesheets block，但加入新的css文件之前调用父模板方法
+在模板中添加一个新的css文件需要重写stylesheets block，但在加入新的css文件之前需要先调用父模板方法
 
 ```html
 <!-- src/Ens/JobeetBundle/Resources/views/Job/index.html.twig -->
@@ -153,7 +164,9 @@ Twig是Symfony2默认的模板引擎。你能定义blocks像我们上面所展�
   <link rel="stylesheet" href="{{ asset('bundles/ensjobeet/css/jobs.css') }}" type="text/css" media="all" />
 {% endblock %}
 <!-- the rest of the code -->
+```
 
+```html
 <!-- src/Ens/JobeetBundle/Resources/views/Job/show.html.twig -->
 {% extends 'EnsJobeetBundle::layout.html.twig' %}
 {% block stylesheets %}
@@ -182,9 +195,12 @@ public function indexAction()
 
 > *译者注：原文中使用的getEntityManager方法已被废弃，现改为getManager方法效果一样。但因为原文使用地方较多，故代码已直接修改，以后文章出现亦同*
 
+> *小提示：请记得将job/index.html.twig替换为EnsJobeetBundle:Job:index.html.twig否则你的修改将无效，下方showAction也相同*
+
 现在让我们仔细观察代码，首先在indexAction()方法中得到**Doctrine entity manager**对象，它会负责把数据持久化到数据库或者把数据从数据库中取出，然后repository对象生成一个查询并去数据库检索所有的职位信息，同时返回一个Doctrine ArrayCollection类型的Job对象并传递给模板(视图)
 
 ## Job主页模板
+
 index.html.twig模板生成的所有职位的HTML表格。下面是当前模板的代码
 
 ```html
@@ -287,7 +303,7 @@ index.html.twig模板生成的所有职位的HTML表格。下面是当前模板�
     </div>
 {% endblock %}
 ```
-![首页](http://www.ens.ro/wp-content/uploads/2012/03/Screenshot-at-2012-03-30-232147-1024x671.png) 
+![day5_the_job_homepage_template_01](./image/day5_the_job_homepage_template_01.png) 
 
 ## 职位详情页模板
 现在开始定制职位详情页模板，打开show.html.twig文件并将下方内容进行替换：
@@ -344,7 +360,7 @@ index.html.twig模板生成的所有职位的HTML表格。下面是当前模板�
 {% endblock %}
 ```
 
-![详情页](http://www.ens.ro/wp-content/uploads/2012/03/Screenshot-at-2012-03-30-232158-1024x671.png) 
+![day5_the_job_page_template_01](./image/day5_the_job_page_template_01.png) 
 
 
 ## 职位详情页Action
@@ -369,13 +385,19 @@ public function showAction($id)
 ```
 
 在action中这次我们使用EnsJobeetBundle:Job repository的find()方法，该方法接收一个能唯一标识Job表的参数，一般是主键值，此处为职位id
+
 如果寻找的职位详情不存在于数据库中时，将会调用
 $this->createNotFoundException()方法抛出一个404页面
 不过值得注意的是，在生产环境和开发环境显示给用户的404页面是的不同：
+
 生产环境：
-![生产环境](http://www.ens.ro/wp-content/uploads/2012/03/Screenshot-at-2012-03-30-231728-1024x671.png)
+![生产环境](./image/day5_the_job_page_action_01.png)
 
 开发环境：
-![开发环境](http://www.ens.ro/wp-content/uploads/2012/03/Screenshot-at-2012-03-30-231718-1024x671.png) 
+![开发环境](./image/day5_the_job_page_action_02.png) 
 
-译者注：关于生产环境中如何使用自定义错误页面，可参考[官方cookbook](http://symfony.com/doc/2.3/cookbook/controller/error_pages.html)
+> *译者注：关于生产环境中如何使用自定义错误页面，可参考[官方cookbook](http://symfony.com/doc/2.3/cookbook/controller/error_pages.html)*
+
+> *小提示：由于新版本中自动生成的代码与上面所示会有部分出入，如showAction传入的是一个job对象，此时可直接判断是否存在而无须查表，诸如此类，可自行稍作修改，在此不再过多叙述*
+
+OK，今天的课程就到这里了。明天我们将熟悉如何使用路由。
