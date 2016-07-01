@@ -12,15 +12,15 @@
 接下来我们将通过[Doctrine ORM](http://www.doctrine-project.org/projects/orm.html)来创建jobs, affiliates 和 categories 三张表。
 首先通过修改`app/config/parameters.ini`文件来修改数据库的连接参数，如下（假定本教程使用MySQL）：
 
-```ini
-~~#app/config/parameters.ini~~
-~~[parameters]~~
-~~&ensp;&ensp;database_driver   = pdo_mysql~~
-~~&ensp;&ensp;database_host     = localhost~~
-~~&ensp;&ensp;database_name     = jobeet~~
-~~&ensp;&ensp;database_user     = root~~
-~~&ensp;&ensp;database_password = password~~
-```
+
+> ~~#app/config/parameters.ini~~  
+> ~~[parameters]~~  
+> ~~&ensp;&ensp;database_driver   = pdo_mysql~~  
+> ~~&ensp;&ensp;database_host     = localhost~~  
+> ~~&ensp;&ensp;database_name     = jobeet~~  
+> ~~&ensp;&ensp;database_user     = root~~  
+> ~~&ensp;&ensp;database_password = password~~  
+
 
 ```yaml
 #app/config/parameters.yml
