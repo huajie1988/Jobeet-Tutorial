@@ -4,32 +4,42 @@
 前一天我们主要讨论了这个项目的主体对象：职位、合作伙伴和分类。
 如下是实体关系图：
 
-![实体关系图](http://www.ens.ro/wp-content/uploads/2012/03/diagram.png)
+![day4_the_relational_model_01](./image/day4_the_relational_model_01.png)
  
-除了在前一天提到的字段外，我们还增加了created_at和updated_at字段。我们将配置Symfony2自动设定它们的值当对象保存或更新的时候。
+除了在前一天中提到的字段外，我们还增加了created_at和updated_at字段。我们将配置Symfony2,使它们的值当对象保存或更新的时候自动设定。
 
-数据库配置
+## 数据库配置
 接下来我们将通过[Doctrine ORM](http://www.doctrine-project.org/projects/orm.html)来创建jobs, affiliates 和 categories 三张表。
 首先通过修改`app/config/parameters.ini`文件来修改数据库的连接参数，如下（假定本教程使用MySQL）：
 
-```yaml
-#app/config/parameters.ini
-[parameters]
-    database_driver   = pdo_mysql
-    database_host     = localhost
-    database_name     = jobeet
-    database_user     = root
-    database_password = password
+```ini
+~~#app/config/parameters.ini~~
+~~[parameters]~~
+~~&ensp;&ensp;database_driver   = pdo_mysql~~
+~~&ensp;&ensp;database_host     = localhost~~
+~~&ensp;&ensp;database_name     = jobeet~~
+~~&ensp;&ensp;database_user     = root~~
+~~&ensp;&ensp;database_password = password~~
 ```
 
-> *译者注：2.1以后改为app/config/parameters.yml文件*
+```yaml
+#app/config/parameters.yml
+parameters:
+    database_driver: pdo_mysql
+    database_host: localhost
+    database_port: null
+    database_name: jobeet
+    database_user: root
+    database_password: password
+    #...
+```
 
-现在Doctrine 已经连接了数据库并且使用如下命令创建数据库（如果你还没有创建的话）：
+现在Doctrine已经连接了数据库，我们可以使用如下命令创建数据库（如果还没有创建的话）：
 
 > **php app/console doctrine:database:create**
 
 ## 创建数据表
-接下来我们将通过Doctrine创建“metadata”文件，它用来描述我们的对象将如何存储在数据库中：
+接下来我们将通过Doctrine创建"metadata"文件，它用来描述我们的对象将如何存储在数据库中：
 
 ```yaml
 #src/Ens/JobeetBundle/Resources/config/doctrine/Category.orm.yml
@@ -179,21 +189,21 @@ Ens\JobeetBundle\Entity\CategoryAffiliate:
 
 
 ## ORM:
-现在我们可以通过如下命令在Doctrine 中创建我们的对象：
+现在我们可以通过如下命令在Doctrine中创建我们的对象：
 
 > **php app/console doctrine:generate:entities EnsJobeetBundle**
 
-> \> Generating entities for bundle "EnsJobeetBundle"
-  \> backing up Job.php to Job.php~
-  \> generating Ens\JobeetBundle\Entity\Job
-  \> backing up Category.php to Category.php~
-  \> generating Ens\JobeetBundle\Entity\Category
-  \> backing up CategoryAffiliate.php to CategoryAffiliate.php~
-  \> generating Ens\JobeetBundle\Entity\CategoryAffiliate
-  \> backing up Affiliate.php to Affiliate.php~
-  \> generating Ens\JobeetBundle\Entity\Affiliate
+> \> Generating entities for bundle "EnsJobeetBundle"  
+  \> backing up Job.php to Job.php~  
+  \> generating Ens\JobeetBundle\Entity\Job  
+  \> backing up Category.php to Category.php~  
+  \> generating Ens\JobeetBundle\Entity\Category  
+  \> backing up CategoryAffiliate.php to CategoryAffiliate.php~  
+  \> generating Ens\JobeetBundle\Entity\CategoryAffiliate  
+  \> backing up Affiliate.php to Affiliate.php~  
+  \> generating Ens\JobeetBundle\Entity\Affiliate  
 
-如果此时你查看EnsJobeetBundle下的**Entity**目录，就会发现有新生成的Affiliate.php, Category.php, CategoryAffiliate.php 和 Job.php
+如果此时你查看EnsJobeetBundle下的Entity目录，就会发现有新生成了Affiliate.php, Category.php, CategoryAffiliate.php 和 Job.php
 打开Job.php并设置created_at和的updated_at如下值：
 
 ```php
@@ -224,12 +234,12 @@ public function setCreatedAtValue()
 }
 ```
 
-这将使Doctrine在保存或更新对象时设置的created_at和的updated_at值。
-接下来我们通过Doctrine来创建数据库表（或更新它们，以反映我们的设置）：
+这将使Doctrine在保存或更新对象时自动设置created_at和updated_at的值。
+接下来我们通过Doctrine命令来创建数据库表（或更新它们，以反映我们的设置）：
 
 > **php app/console doctrine:schema:update --force**
 
-*此方法应该只在开发过程中使用.如果将其用于你的生产环境将会很糟糕,更多请详见 [Doctrine migrations](http://symfony.com/doc/current/bundles/DoctrineMigrationsBundle/index.html)*
+*此方法应该只在开发过程中使用.如果将其用于你的生产环境将会很糟糕,更多详情请见 [Doctrine migrations](http://symfony.com/doc/current/bundles/DoctrineMigrationsBundle/index.html)*
 
 
 ## Annotation方式创建数据库
@@ -237,7 +247,7 @@ public function setCreatedAtValue()
 本节为译者补充内容，annotation方式相比较传统的yaml格式的定义方式更灵活，与代码的结合也更紧密，如果初学者也可先跳过。
 
 
-首先创建Ens\JobeetBundle\Entity\Category.php 文件，然后如下填写
+首先创建`Ens\JobeetBundle\Entity\Category.php`文件，然后如下填写
 
 ```php
 // src/JobeetBundle/Entity/Category.php
@@ -246,8 +256,8 @@ namespace JobeetBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
-  * @ORM\Entity(repositoryClass=” CategoryRepository”)
-  * @ORM\Table(name=" category ")
+  * @ORM\Entity(repositoryClass="CategoryRepository")
+  * @ORM\Table(name="category")
   */
 class Category
 {
@@ -259,7 +269,7 @@ class Category
     protected $id;
 
     /**
-      * @ORM\Column(type="string", length=100,unique=”true”)
+      * @ORM\Column(type="string",length=100,unique="true")
       */
     protected $name;
 
@@ -274,7 +284,7 @@ class Category
 use Doctrine\ORM\OneToMany;
 //…
 /**
-  * @OneToMany(“targetEntity”=Job”, mappedBy=”category”)
+  * @OneToMany(targetEntity="Job", mappedBy="category")
   */
 
 protected $jobs
@@ -286,17 +296,21 @@ use Doctrine\ORM\ManyToOne;
 use Doctrine\ORM\JoinColumn;
 //…
 /**
-  * @ManyToOne(“targetEntity”=Category”, inversedBy=”jobs”)
-  * @JoinColumn(name=”category_id”,referencedColumnName=“id”)
+  * @ManyToOne(targetEntity="Category", inversedBy="jobs")
+  * @JoinColumn(name="category_id",referencedColumnName="id")
   */
 
 protected $category
 ```
 
 
-**targetEntity**代表目标表，**inversedBy**或者**mappedBy**则代表那个表中entity所定义的字段。
-**JoinColumn**中那么表示本表的字段，**referencedColumnName**表示外键对应的另一个表的字段
-简单说*外键* **JoinColumn** 所定义的地方是**inversedBy**而另一边是**mappedBy**
+**targetEntity**代表目标表，  
+**inversedBy**或者**mappedBy**则代表那个表中entity所定义的字段。  
+**JoinColumn**中那么表示本表的字段，  
+**referencedColumnName**表示外键对应的另一个表的字段  
+简单说外键**JoinColumn**所定义的地方是**inversedBy**而另一边就是**mappedBy**  
+
+> *小提示：@ORM\Table(name="category")所定义的表名是区分大小写的，请格外注意*
 
 如要进行生命管理可参照下面所示：
 
@@ -304,23 +318,22 @@ protected $category
 // src/Ens/JobeetBundle/Entity/Job.php
 // ...
 /**
-  * @ORM\Entity(repositoryClass=”JobRepository”) 
-* @ORM\Table(name="job")
-* @ORM\HasLifecycleCallbacks
-*/
+  * @ORM\Entity(repositoryClass="JobRepository") 
+  * @ORM\Table(name="job")
+  * @ORM\HasLifecycleCallbacks
+  */
 class Job
 {
 // ...
 	 /**
      * @ORM\PerPersist()
      */
-    public function setCreatedAtValue()
-{
+    public function setCreatedAtValue(){
   		if(!$this->getCreatedAt())
   		{
     		$this->created_at = new \DateTime();
   		}
-}
+    }
 
 }
 
@@ -332,32 +345,31 @@ class Job
 // src/Ens/JobeetBundle/Entity/Job.php
 // ...
 /**
-  * @ORM\Entity(repositoryClass=”JobRepository”) 
+  * @ORM\Entity(repositoryClass="JobRepository") 
   * @ORM\Table(name="job")
   * @ORM\HasLifecycleCallbacks
   */
 class Job
 {
 // ...
-    public function PerPersist()
-{
-  		if(!$this->getCreatedAt())
-  		{
-    		$this->setCreatedAt(new \DateTime());
-  		}
-		$this->setUpdatedAt(new \DateTime());
-	}
+    public function PerPersist(){
+    		if(!$this->getCreatedAt())
+    		{
+      		$this->setCreatedAt(new \DateTime());
+    		}
+  		$this->setUpdatedAt(new \DateTime());
+    }
 }
 
 ```
 
 定义完之后输入
-> **php app/console generate:doctrine:entities JobeetBundle**
+> **php app/console generate:doctrine:entities EnsJobeetBundle**
 
 > **php app/console doctrine:schema:update --force**
 
 ## 数据初始化:
-表虽然已经建好了，但暂时其中还没有数据。对于任何Web应用，一般来说有三种类型的数据：初始数据（这是应用正常工作时必要的数据，在我们的例子中为初始化分类和管理员用户数据），测试数据（应用程序进行测试时需要的数据）和用户数据（应用程序在正常使用生命周期中由用户发布的数据）。
+我们的表虽然已经建好了，但其中暂时还没有数据。对于任何Web应用，一般来说有三种类型的数据：初始数据（这是应用正常工作时必要的数据，在我们的例子中为初始化分类和管理员用户数据），测试数据（应用程序进行测试时需要的数据）和用户数据（应用程序在正常使用生命周期中由用户发布的数据）。
 
 我们将使用[DoctrineFixturesBundle](http://symfony.com/doc/current/bundles/DoctrineFixturesBundle/index.html)为数据库填充初始数据。要使用这个包，我们必须按照下面的步骤：
 
@@ -374,7 +386,7 @@ class Job
 
 > **~~php bin/vendors install –reinstall~~**
 
-~~3、	将*Doctrine\Common\DataFixtures*命名空间注册到*app/autoload.php*里~~
+~~3、	将`Doctrine\Common\DataFixtures`命名空间注册到`app/autoload.php`里~~
 
 
 > ~~// ...~~  
@@ -386,7 +398,7 @@ class Job
 > ~~));~~  
 
 
-~~4、	将DoctrineFixturesBundle注册到app/AppKernel.php中~~
+~~4、	将DoctrineFixturesBundle注册到`app/AppKernel.php`中~~
 
 
 > ~~// ...~~  
@@ -419,7 +431,7 @@ class Job
 
 > **php composer.phar update**
 
-3、将DoctrineFixturesBundle注册到app/AppKernel.php中：
+3、将DoctrineFixturesBundle注册到`app/AppKernel.php`中：
 
 ```php
 // ...
@@ -427,7 +439,7 @@ public function registerBundles()
 {
     $bundles = array(
     // ...
-        new Symfony\Bundle\DoctrineFixturesBundle\DoctrineFixturesBundle(),
+        new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle(),
     // ...
     );
   // ...
@@ -435,7 +447,7 @@ public function registerBundles()
 ```
 
 
-> *译者注：现在前三步可以直接用Composer安装完成。不得不说这真是一个跨时代的发明(XD)。且以后的安装方式也与上述表示相同，即原文保留，但以新的方式替代。*
+> *译者注：现在前三步可以直接用Composer安装完成。不得不说这真是一个跨时代的发明(XD)。另以后安装方式将只以新的方式展示，老的安装方式将不再累述。*
 
 现在我们已经安装好一切了，可以开始着手填充数据了。
 
@@ -546,9 +558,10 @@ class LoadJobData extends AbstractFixture implements OrderedFixtureInterface
 
 > **php app/console doctrine:fixtures:load**
 
-*现在检查数据库，你将会看到数据库中已经有数据了其中需要引用两个图像。您可以通过如下网址下载它们（[sensio-labs.gif](http://www.ens.ro/downloads/sensio-labs.gif),[extreme-sensio.gif](http://www.ens.ro/downloads/extreme-sensio.gif)）并把他们放到web/uploads/jobs/目录下。*
+*现在检查数据库，你将会看到数据库中已经有数据了其中需要引用两个图像。您可以通过如下网址下载它们（[sensio-labs.gif](./image/sensio-labs.gif),[extreme-sensio.gif](./image/extreme-sensio.gif)）并把他们放到`web/uploads/jobs/`目录下。*
 
 ## 在浏览器中查看效果
+
 现在让我们使用一些魔法！输入如下命令：
 
 > **php app/console doctrine:generate:crud --entity=EnsJobeetBundle:Job --route-prefix=ens_job --with-write --format=yml**
@@ -564,9 +577,10 @@ EnsJobeetBundle_job:
     prefix: /job
  
 EnsJobeetBundle_homepage:
-    pattern:  /hello/{name}
+    pattern:  /
     defaults: { _controller: EnsJobeetBundle:Default:index }
 ```
+> *译者注：输入doctrine:generate:crud会有几个问题问你，此时除了prefix改成/job之外，你只需默认即可。*
 
 现在我们要添加一个toString()方法在Category 类中，这样做是为了能让Job表单下拉选择分类
 
@@ -587,11 +601,49 @@ public function __toString()
 
 现在你能在浏览器中通过访问*http://jobeet.local/job/* 或*http://jobeet.local/app_dev.php/job/*测试job控制器
  
-![职位列表](http://www.ens.ro/wp-content/uploads/2012/03/jobeet_job_list.png)
+![day4_see_it_in_the_browser_01](./image/day4_see_it_in_the_browser_01.png)
 
-![职位编辑](http://www.ens.ro/wp-content/uploads/2012/03/jobeet_job_edit-1024x681.png)
+![day4_see_it_in_the_browser_02](./image/day4_see_it_in_the_browser_02.png)
  
 现在你可以创建和编辑职位。同时可以尝试在必填项留空，或尝试输入无效数据，都是可以正确验证的，这是因为Symfony已经在数据库建立的时候就创建了基本的验证规则
+
+## 新版修正
+
+如果你之前是按照本教程一步步做下来的话，且使用新版本的话(例如2.8)同时又没有看我写的annotation这节就会发现其实这个例子的new和edit是不能正常工作的。为此你需要手动修正一下。
+
+首先在`src/Ens/JobeetBundle/Entity/Job.php`中头部加入
+
+```php
+// ...
+use Doctrine\ORM\Mapping as ORM;
+// ...
+```
+
+接着打开`src/Ens/JobeetBundle/Form/JobType.php`文件头部加入
+
+```php
+// ...
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+// ...
+```
+
+然后将
+
+```php
+            ->add('expires_at', 'datetime')
+            ->add('created_at', 'datetime')
+            ->add('updated_at', 'datetime')
+```
+
+修改为
+
+```php
+            ->add('expires_at', DateTimeType::class)
+//            ->add('created_at', DateTimeType::class)
+//            ->add('updated_at', DateTimeType::class)
+```
+修改完成之后即可使用。
+
 
 ## 反思
 这就是我们今天写的所有php代码，虽然少，但我们已经有了可以正常工作的job模块了，并且可以定制和优化。

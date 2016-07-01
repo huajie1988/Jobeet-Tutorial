@@ -11,7 +11,7 @@
  
 ![day1_download_and_install_01](./image/day1_download_and_install_01.png)
 
-> *译者注：上面提供的方法已经失效，自Symfony2.3之后下载通过Symfony Installer进行安装。具体方法可参考官网。或由Composer进行安装（~~其中1.0.0-alpha10有较大bug，会导致无法安装包，请谨慎下载~~ 截至至现在该问题已经恢复正常），由于国内网络众所周知的原因，基本上两者直接下载一次成功的可能性都较小，个人推荐Composer安装。*  
+> *译者注：上面提供的方法已经失效，自Symfony2.1之后下载通过Symfony Installer进行安装。具体方法可参考官网。或由Composer进行安装（~~其中1.0.0-alpha10有较大bug，会导致无法安装包，请谨慎下载~~ 截至至现在该问题已经恢复正常），由于国内网络众所周知的原因，基本上两者直接下载一次成功的可能性都较小，个人推荐Composer安装。*  
 
 > *小提示：用Symfony Installer安装的时候你会发现有一个临时目录，会将下载的压缩包放于其中，而本身解压需要不少时间，so，你懂的。*
 
