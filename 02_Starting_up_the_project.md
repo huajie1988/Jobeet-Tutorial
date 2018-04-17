@@ -8,7 +8,7 @@
 
 在你的web服务器上建立一个新的站点目录，用来安装这个项目。我们将其命名为Jobeet。
 打开 *http://symfony.com/download* ，选择"Symfony Standard"并下载（截至作者书写时最新版本为2.0.11）。下载完成之后将其解压到之前你所创建的目录。结构如下图： 
- 
+
 ![day1_download_and_install_01](./image/day1_download_and_install_01.png)
 
 > *译者注：上面提供的方法已经失效，自Symfony2.1之后下载通过Symfony Installer进行安装。具体方法可参考官网。或由Composer进行安装（~~其中1.0.0-alpha10有较大bug，会导致无法安装包，请谨慎下载~~ 截至至现在该问题已经恢复正常），由于国内网络众所周知的原因，基本上两者直接下载一次成功的可能性都较小，个人推荐Composer安装。*  
@@ -139,6 +139,9 @@ secret (ThisTokenIsNotSoSecretChangeIt):*098f6bcd4621d373cade4e832627b4f6*
 > *译者注：老版本中应该访问http://jobeet.local/hello/jobeet或http://jobeet.local/app_dev.php/hello/jobeet*
 
 > *译者注：此时还需要将原本作为demo的AppBundle删除，在老版本中(如2.3)可能叫做AcmeDemoBundle。具体方法是首先删除src下的这个Bundle目录，然后AppKernel.php中删除这行的注册，一般格式是$bundles[] = new AppBundle(); 最后删除路由中这行，一般在app/config/routing.yml中，老版本在app/config/routing_dev.yml中。最后清除一下缓存即可完成。*  
+
+>*译者注：有时候还会发生使用新建Bundle命令后提示AppKernel.php中未找到你所新建的这个Bundle，但AppKernel.php中有该行是否没有use的问题。这是因为新建Bundle的时候并未更新composer.json从而未自动加载的原因——在早期版本中未发现此问题——可以在autoload下的psr-4下添加类似"App\\": "src/App"的行，然后使用composer dumpautoload命令解决这个问题。参考[stackoverflow的回答](https://stackoverflow.com/questions/44946911/symfony3-classnotfoundexception-after-bundle-creation)
+
 
 > *译者注：在symfony 3.0之后将console文件移动到bin目录下，操作不变*
 
